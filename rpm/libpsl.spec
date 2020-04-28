@@ -3,17 +3,15 @@ Name:       libpsl
 Summary:    PSL is a collection of Top Level Domains suffixes.
 Version:    0.21.0
 Release:    0
-Group:      System/Libraries
 License:    MIT
 URL:        https://github.com/rockdaboot/libpsl
 Source0:    %{name}-%{version}.tar.bz2
 
 BuildRequires:  meson
-BuildRequires:  python
+BuildRequires:  python3-devel
 
 %package devel
 Summary: Development files for the %{name} package
-Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description
@@ -28,14 +26,14 @@ A Public Suffix List development package.
 
 %package doc
 Summary:   Documentation for %{name}
-Group:     Documentation
 Requires:  %{name} = %{version}-%{release}
 
 %description doc
 %{summary}.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%autosetup -p1 -n %{name}-%{version}/%{name}
+sed -i -e "1s|#!.*|#!%{__python3}|" src/psl-make-dafsa
 
 %build
 %meson
