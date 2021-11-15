@@ -52,6 +52,7 @@ install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} \
 
 %files
 %defattr(-,root,root)
+%license LICENSE
 %{_libdir}/libpsl.so
 
 %files devel
