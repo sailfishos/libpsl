@@ -1,7 +1,7 @@
 Name:       libpsl
 
 Summary:    PSL is a collection of Top Level Domains suffixes.
-Version:    0.21.0
+Version:    0.21.5
 Release:    0
 License:    MIT
 URL:        https://github.com/rockdaboot/libpsl
@@ -31,6 +31,23 @@ Requires:  %{name} = %{version}-%{release}
 %description doc
 %{summary}.
 
+%package -n psl
+Summary: Commandline utility to explore the Public Suffix List
+
+%description -n psl
+This package contains a commandline utility to explore the Public Suffix List,
+for example it checks if domains are public suffixes, checks if cookie-domain
+is acceptable for domains and so on.
+
+%package -n psl-make-dafsa
+Summary: Compiles the Public Suffix List into DAFSA form
+BuildArch: noarch
+
+%description -n psl-make-dafsa
+This script produces C/C++ code or an architecture-independent binary object
+which represents a Deterministic Acyclic Finite State Automaton (DAFSA)
+from a plain text Public Suffix List.
+
 %prep
 %autosetup -p1 -n %{name}-%{version}/%{name}
 sed -i -e "1s|#!.*|#!%{__python3}|" src/psl-make-dafsa
@@ -51,15 +68,23 @@ install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} \
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root)
 %license LICENSE
-%{_libdir}/libpsl.so
+%{_libdir}/libpsl.so.*
 
 %files devel
-%defattr(-,root,root)
+%{_libdir}/libpsl.so
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/libpsl.pc
 
 %files doc
-%defattr(-,root,root,-)
 %{_docdir}/%{name}-%{version}
+
+%files -n psl
+%license LICENSE
+%{_bindir}/psl
+%{_mandir}/man1/psl.1*
+
+%files -n psl-make-dafsa
+%license LICENSE
+%{_bindir}/psl-make-dafsa
+%{_mandir}/man1/psl-make-dafsa.1*
